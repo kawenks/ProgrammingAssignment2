@@ -23,11 +23,6 @@
 ##              It returns the cached inverse if available.
 ##
 ##
-## makeCacheMatrix (requires matrix as input parameter)
-##
-##                 initializes a cache to store the matrix inverse
-##                 creates methods to set and get the matrix
-##                 creates methods to set and get the inverse of the matrix
 ##
 ## -----------------
 ## Usage and Testing:
@@ -51,29 +46,49 @@
 ## [3,] 0.007352941  0.05147059  0.07352941
 ## >
 ##
-## Also test using random uniform generator
+## Also test using random uniform generator to form a 4x4 matrix
+##
 ## m2 <- cbind(runif(4,12,30), runif(4,0,50),runif(4,0,6),runif(4,0,15))
 ## m2_cached <- makeCacheMatrix(m2)
 ## cacheSolve(m2_cached)
-## ...
-##
-## -- code follows --
+## 
 ##
 
+## ---- Code Follows ----
+
+##
+## makeCacheMatrix (requires matrix as input parameter)
+##
+##                 initializes a cache to store the matrix inverse
+##                 creates methods to set and get the matrix
+##                 creates methods to set and get the inverse of the matrix
 makeCacheMatrix <- function(m = matrix()) {
     ## this is the inverse cache for this object
     inv <- NULL
     
     ## create methods .. set, get, setinverse & getinverse
+
+    ## set method 
+    ## Note: this is actually where the matrix "m" and the inverse "inv"
+    ##       gets "stored" into the object using the lexical
+    ##       scoping feature of R.
     set <- function(y) {
         m <<- y
         inv <<- NULL
     }
+    
+    ## get method .. returns contents of m as previously set above.
     get <- function() m
+    
+    ## setinverse method .. saves the inverse matrix into inv
     setinverse <- function(inverse) inv <<- inverse
+    
+    ## getinverse method .. returns the whatever value stored in inv
     getinverse <- function() inv
     
-    ## return this object as list
+    ## return this object as list 
+    ## .. at this point, inv and m are embedded and 
+    ##    returned with the methods
     list(set = set, get = get,
          setinverse = setinverse,
          getinverse = getinverse)
